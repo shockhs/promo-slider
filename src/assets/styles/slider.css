@@ -2,19 +2,21 @@
     --checkedWidth: 940px;
     --height: 270px;
     --buttonHeight: 60px;
+    --containerHeight: 300px;
 }
 
 .controlContainer {
     position: relative;
     left: 0px;
+    top: calc(50% - var(--height) / 2);
     width: 100%;
-    height: var(--height);
+    height: var(--containerHeight);
 }
 
 .slidesContainer {
     position: relative;
     width: 100%;
-    height: var(--height);
+    height: var(--containerHeight);
 }
 
 .buttonContainer {

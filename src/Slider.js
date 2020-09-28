@@ -12,10 +12,11 @@ export default class SliderJS {
      * @param {number} config.timeout - Set timeout for auto-sliding
      * @param {boolean} config.hideControls - Hide controls bar
      */
-    constructor(sliderName, { width = 640, height = 270, iconSize = 60, timeout = 3000, hideControls = false } = {}) {
+    constructor(sliderName, { containerHeight = 370, width = 640, height = 270, iconSize = 60, timeout = 3000, hideControls = false } = {}) {
         this.slider = document.getElementById(sliderName)
         this.timeout = timeout
         this.checkedWidth = window.innerWidth > 0 && window.innerWidth >= width ? width : window.innerWidth
+        this.containerHeight = containerHeight
 
         if (this.slider) {
             this.getSliderParams()
@@ -38,7 +39,6 @@ export default class SliderJS {
             this.addListenersForTransition()
             this.addListenersForTouchSwipe()
             this.addListenersForMouseSwipe()
-            this.addListenersForWindow()
             if (!hideControls && window.innerWidth >= 724) {
                 this.addControls(iconSize)
             }
@@ -55,6 +55,7 @@ export default class SliderJS {
         const root = document.documentElement
         root.style.setProperty('--checkedWidth', `${this.checkedWidth}px`)
         root.style.setProperty('--height', `${height}px`)
+        root.style.setProperty('--containerHeight', `${this.containerHeight}px`)
     }
 
     setStartedParams = () => {
@@ -64,6 +65,10 @@ export default class SliderJS {
     }
 
     setStartedPositions() {
+        // const root = document.documentElement
+        // root.style.setProperty('--imageUrl', `url(${this.controlContainer.children[
+        //     this.positionsController.getCurrent()
+        // ].firstElementChild.attributes.src.value})`)
         this.controlContainer.children[
             this.positionsController.getPrevPrev()
         ].className = `${styles.imageDefault} ${styles.prevPrevNumber}`
@@ -114,7 +119,6 @@ export default class SliderJS {
             'touchstart',
             (event) => {
                 event.preventDefault()
-                this.clearIntervalPresentation()
                 this.startPosition = event.changedTouches[0].clientX
             },
             false
@@ -124,12 +128,11 @@ export default class SliderJS {
             'touchend',
             (event) => {
                 event.preventDefault()
+                console.log(event.changedTouches[0].clientX, this.startPosition);
                 if (event.changedTouches[0].clientX - this.startPosition > 0) {
                     this.simulationPrevClick()
-                    if (this.statusPresentation) this.resetInterval()
                 } else {
                     this.simulationNextClick()
-                    if (this.statusPresentation) this.resetInterval()
                 }
             },
             false
@@ -142,7 +145,6 @@ export default class SliderJS {
             (event) => {
                 event.preventDefault()
                 if (!this.buttonBlocked) {
-                    this.clearIntervalPresentation()
                     this.startPosition = event.clientX
                 }
             },
@@ -156,27 +158,13 @@ export default class SliderJS {
                 if (!this.buttonBlocked) {
                     if (event.clientX - this.startPosition > 0) {
                         this.simulationPrevClick()
-                        if (this.statusPresentation) this.resetInterval()
                     } else if (event.clientX - this.startPosition < 0) {
                         this.simulationNextClick()
-                        if (this.statusPresentation) this.resetInterval()
                     }
                 }
             },
             false
         )
-    }
-
-    addListenersForWindow() {
-        window.addEventListener('focus', () => {
-            if (this.statusPresentation) {
-                this.resetInterval()
-            }
-        })
-
-        window.addEventListener('blur', () => {
-            this.clearIntervalPresentation()
-        })
     }
 
     activateContainer = () => {
