@@ -6,7 +6,7 @@ module.exports = {
     target: 'web',
     watch: true,
     output: {
-        filename: 'promo-slider.js',
+        filename: 'platform-slider.js',
         path: path.resolve(__dirname, 'dist'),
         library: 'SliderJS',
         libraryExport: 'default',
