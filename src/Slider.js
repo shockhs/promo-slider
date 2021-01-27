@@ -37,8 +37,8 @@ export default class SliderJS {
             this.setStartedParams()
             this.setStartedPositions()
             this.addListenersForTransition()
-            // this.addListenersForTouchSwipe()
-            // this.addListenersForMouseSwipe()
+            this.addListenersForTouchSwipe()
+            this.addListenersForMouseSwipe()
             if (!hideControls && window.innerWidth >= 724) {
                 this.addControls(iconSize)
             }

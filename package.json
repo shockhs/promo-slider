@@ -1,6 +1,6 @@
 {
     "name": "platform-slider",
-    "version": "1.3.0",
+    "version": "1.11.1",
     "main": "dist/platform-slider.js",
     "files": [
         "dist"
